@@ -65,6 +65,8 @@ class LocationCubit extends Cubit<LocationState> {
       double lat = locationModel.latitude;
       double long = locationModel.longitude;
       try {
+        //TOD0: this is a paid library used for reverseGeocoding
+        // as there were couple of issues with free ones, i have to do more  more research on this
         currentAddress =
             await GeoCode().reverseGeocoding(latitude: lat, longitude: long);
       } catch (e) {
