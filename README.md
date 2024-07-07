@@ -5,6 +5,7 @@ A new Flutter project.
 NOTE : GEOLOCATION package used to convert lat long in string address is a paid libray. and it is used in this proejecg
 hence there are limited calls per seconds. so user cant test location feature very quickly in this test task
 
+Design doc : added in the root folder named as : we_work_design_decisions
 
 ## Getting Started
 
