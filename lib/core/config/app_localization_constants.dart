@@ -1,11 +1,11 @@
-/// A static class that provides a map of language codes and their corresponding full names.
+/// A static class that provides a location of language codes and their corresponding full names.
 ///
 /// This class is intended to be used for internationalization (i18n) purposes within your application.
-/// You can access the map using the `mapOfLanguageConstants` property.
+/// You can access the location using the `mapOfLanguageConstants` property.
 class AppLocalizationConstants {
-  /// A map containing language codes as keys and their full names as values.
+  /// A location containing language codes as keys and their full names as values.
   ///
-  /// This map can be used to translate UI elements based on the user's preferred language.
+  /// This location can be used to translate UI elements based on the user's preferred language.
   /// The key represents the language code (e.g., 'en' for English, 'es' for Spanish).
   /// The value represents the full name of the language (e.g., 'English', 'Spanish').
 

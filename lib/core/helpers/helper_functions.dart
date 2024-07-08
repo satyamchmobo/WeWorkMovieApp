@@ -65,8 +65,8 @@ String getDayOrdinalSuffix(int day) {
   }
 }
 
-/// Fetches the full language name for a given language code, using a map from the `AppLocalizationConstants` class.
-/// If the language code is not found in the map, returns "Unknown".
+/// Fetches the full language name for a given language code, using a location from the `AppLocalizationConstants` class.
+/// If the language code is not found in the location, returns "Unknown".
 String getFullLanguageName(String languageCode) {
   return AppLocalizationConstants.mapOfLanguageConstants[languageCode] ??
       'Unknown';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../map/map_page.dart';
+import 'package:we_work/presentation/location/location_permission_page.dart';
 
 class LocationPermission extends StatelessWidget {
   static const String routeName = "/locationPermissionPage";

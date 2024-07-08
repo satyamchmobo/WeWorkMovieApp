@@ -17,7 +17,6 @@ class LocationPermissionPage extends StatefulWidget {
 
 class _LocationPermissionPageState extends State<LocationPermissionPage>
     with SingleTickerProviderStateMixin {
-  // final mapController = MapController();
   bool _isDone = false;
   AnimationController? _animationController;
   Animation<double>? _scaleAnimation;
@@ -59,10 +58,6 @@ class _LocationPermissionPageState extends State<LocationPermissionPage>
 
     //initializing our home bloc
     homePageBloc.add(const HomeEventIntial());
-    //setting up listeners for horizontal and vertical controllers
-    //so that we can trigger pagination
-
-    // }
 
     super.initState();
     _animationController = AnimationController(
