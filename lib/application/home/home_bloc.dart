@@ -102,8 +102,6 @@ class HomePageBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> onRefresh() async {
-    // Simulate a long-running task
-    await Future.delayed(const Duration(seconds: 2));
     add(RefreshPageEvent());
   }
 
