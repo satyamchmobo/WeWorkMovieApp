@@ -6,6 +6,8 @@ import 'package:we_work/application/permission/permission_cubit.dart';
 import 'package:we_work/core/services/service_locator.dart';
 import 'package:we_work/domain/location_data_model.dart';
 import 'package:we_work/presentation/home/pages/home_page.dart';
+import 'package:we_work/presentation/location/widgets/app_settings_dialog.dart';
+import 'package:we_work/presentation/location/widgets/permission_dialog.dart';
 import '../../injection.dart';
 
 class LocationPermissionPage extends StatefulWidget {
@@ -192,8 +194,11 @@ class _LocationPermissionPageState extends State<LocationPermissionPage>
               ],
               child: Scaffold(
                 body: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 200,
+                    ),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -214,7 +219,10 @@ class _LocationPermissionPageState extends State<LocationPermissionPage>
                         )),
                       ],
                     ),
-                    Center(
+                    const SizedBox(
+                      height: 130,
+                    ),
+                    SizedBox(
                       child: Column(
                         children: [
                           ScaleTransition(
@@ -241,286 +249,10 @@ class _LocationPermissionPageState extends State<LocationPermissionPage>
                         ],
                       ),
                     ),
-                    Stack(
-                      children: [
-                        BlocSelector<PermissionCubit, PermissionState, bool>(
-                          selector: (state) {
-                            return state
-                                .isLocationPermissionGrantedAndServicesEnabled;
-                          },
-                          builder: (context,
-                              isLocationPermissionGrantedAndServicesEnabled) {
-                            return isLocationPermissionGrantedAndServicesEnabled
-                                ? const SizedBox.shrink()
-                                : const Positioned(
-                                    right: 30,
-                                    bottom: 50,
-                                    child: LocationButton(),
-                                  );
-                          },
-                        ),
-                        BlocBuilder<LocationCubit, LocationState>(
-                          buildWhen: (p, c) {
-                            return p.isUserLocationReady !=
-                                c.isUserLocationReady;
-                          },
-                          builder: (context, state) {
-                            return !state.isUserLocationReady
-                                ? const SizedBox.shrink()
-                                : Positioned(
-                                    left: 30,
-                                    bottom: 50,
-                                    child: CenterButton(
-                                      onPressed: () {
-                                        // mapController.move(
-                                        //   LatLng(state.userLocation.latitude,
-                                        //       state.userLocation.longitude),
-                                        //   mapController.zoom,
-                                        // );
-                                      },
-                                    ),
-                                  );
-                          },
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
             ),
           );
-  }
-}
-
-class UserMarker extends StatefulWidget {
-  const UserMarker({super.key});
-
-  @override
-  State<UserMarker> createState() => _UserMarkerState();
-}
-
-class _UserMarkerState extends State<UserMarker>
-    with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
-  late Animation<double> sizeAnimation;
-
-  @override
-  void initState() {
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    );
-    sizeAnimation = Tween<double>(
-      begin: 45,
-      end: 60,
-    ).animate(CurvedAnimation(
-        parent: animationController, curve: Curves.fastOutSlowIn));
-    animationController.repeat(
-      reverse: true,
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: sizeAnimation,
-      builder: (context, child) {
-        return Center(
-          child: Container(
-            width: sizeAnimation.value,
-            height: sizeAnimation.value,
-            decoration: const BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.circle,
-            ),
-            child: child,
-          ),
-        );
-      },
-      child: const Icon(
-        Icons.person_pin,
-        color: Colors.white,
-        size: 35,
-      ),
-    );
-  }
-}
-
-class CenterButton extends StatelessWidget {
-  final Function onPressed;
-  const CenterButton({
-    super.key,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-            return Colors.black;
-          },
-        ),
-      ),
-      onPressed: () {
-        debugPrint("Center button Pressed!");
-
-        onPressed();
-      },
-      child: const Text("Center"),
-    );
-  }
-}
-
-class LocationButton extends StatelessWidget {
-  const LocationButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-            return Colors.black;
-          },
-        ),
-      ),
-      onPressed: () {
-        debugPrint("Location Services button Pressed!");
-
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            final bool isLocationPermissionGranted = context.select(
-                (PermissionCubit element) =>
-                    element.state.isLocationPermissionGranted);
-            final bool isLocationServicesEnabled = context.select(
-                (PermissionCubit element) =>
-                    element.state.isLocationServicesEnabled);
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              content: PermissionDialog(
-                isLocationPermissionGranted: isLocationPermissionGranted,
-                isLocationServicesEnabled: isLocationServicesEnabled,
-              ),
-            );
-          },
-        );
-      },
-      child: const Text("Request Location Permission"),
-    );
-  }
-}
-
-class PermissionDialog extends StatelessWidget {
-  final bool isLocationPermissionGranted;
-  final bool isLocationServicesEnabled;
-  const PermissionDialog({
-    super.key,
-    required this.isLocationPermissionGranted,
-    required this.isLocationServicesEnabled,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 10),
-        const Text(
-            "Please allow location permission and services to view your location:)"),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text("Location Permission: "),
-            TextButton(
-              onPressed: isLocationPermissionGranted
-                  ? null
-                  : () {
-                      debugPrint("Location permission button pressed!");
-                      context
-                          .read<PermissionCubit>()
-                          .requestLocationPermission();
-                    },
-              child: Text(isLocationPermissionGranted ? "allowed" : "allow"),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text("Location Services: "),
-            TextButton(
-              onPressed: isLocationServicesEnabled
-                  ? null
-                  : () {
-                      debugPrint("Location services button pressed!");
-                      context.read<PermissionCubit>().openLocationSettings();
-                    },
-              child: Text(isLocationServicesEnabled ? "allowed" : "allow"),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-      ],
-    );
-  }
-}
-
-class AppSettingsDialog extends StatelessWidget {
-  final Function openAppSettings;
-  final Function cancelDialog;
-  const AppSettingsDialog({
-    super.key,
-    required this.openAppSettings,
-    required this.cancelDialog,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 10),
-        const Text(
-            "You need to open app settings to grant Location Permission"),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-              onPressed: () {
-                openAppSettings();
-              },
-              child: const Text("Open App Settings"),
-            ),
-            TextButton(
-              onPressed: () {
-                cancelDialog();
-              },
-              child: const Text(
-                "Cancel",
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-      ],
-    );
   }
 }

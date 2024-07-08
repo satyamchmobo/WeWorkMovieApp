@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:we_work/presentation/core/app_widget.dart';
+import 'package:we_work/presentation/core/location_permission_wrapper.dart';
 import 'package:we_work/presentation/splash/widgets/black_ring.dart';
 import 'package:we_work/presentation/splash/widgets/positioned_logo_animation.dart';
 import 'package:we_work/presentation/splash/widgets/we_work_logo.dart';

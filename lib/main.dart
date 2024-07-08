@@ -5,7 +5,7 @@ import 'package:we_work/application/application_life_cycle/application_life_cycl
 import 'package:we_work/application/permission/permission_cubit.dart';
 import 'package:we_work/core/config/enums.dart';
 import 'package:we_work/injection.dart';
-import 'package:we_work/presentation/core/app_widget.dart';
+import 'package:we_work/presentation/core/location_permission_wrapper.dart';
 import 'package:we_work/presentation/home/pages/home_page.dart';
 import 'core/services/service_locator.dart';
 import 'presentation/splash/pages/wework_splash_screen.dart';

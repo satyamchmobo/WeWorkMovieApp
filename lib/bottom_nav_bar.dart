@@ -11,6 +11,12 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      currentIndex: homePageBloc.indexOfSelectedBottomNav,
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.grey,
+      onTap: onBottomItemTapped,
+      backgroundColor: Colors.white,
+      selectedFontSize: 12,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: iconGenerate(ImageConstants.roundLogo,
@@ -28,12 +34,6 @@ class BottomBar extends StatelessWidget {
           label: 'Upcoming',
         ),
       ],
-      currentIndex: homePageBloc.indexOfSelectedBottomNav,
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.grey,
-      onTap: onBottomItemTapped,
-      backgroundColor: Colors.white,
-      selectedFontSize: 12,
     );
   }
 }
