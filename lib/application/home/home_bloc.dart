@@ -106,7 +106,6 @@ class HomePageBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void updateConnectivity(dynamic hasConnection) async {
-    debugPrint('hasCOnnected $hasConnection');
     if (hasConnection) {
       onRefresh();
     }
